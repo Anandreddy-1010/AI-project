@@ -1,496 +1,685 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>AI Powered Adaptive Renewable Energy Optimizer</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <title>AI Powered Adaptive Renewable Energy Optimizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<style>
-/* RESET & BASE */
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html, body { transform: none !important; rotate: 0deg !important; }
-body {
-  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-  background: radial-gradient(circle at top, #020617 0%, #000814 45%, #020617 100%);
-  color: #e5e7eb;
-  overflow-x: hidden;
-}
+  <style>
+    /* --- Global Reset --- */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* SCROLL SMOOTH */
-html { scroll-behavior: smooth; }
+    html, body {
+      transform: none !important;
+      writing-mode: horizontal-tb !important;
+      text-orientation: mixed !important;
+    }
 
-/* INTRO OVERLAY */
-#intro-overlay {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(circle at center, #020617 0%, #000 60%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  color: #e5e7eb;
-  animation: introFade 2.8s ease forwards;
-}
-#intro-title {
-  font-size: 1.6rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #bfdbfe;
-  margin-bottom: 0.8rem;
-}
-#intro-text {
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-@keyframes introFade {
-  0% { opacity: 1; }
-  65% { opacity: 1; }
-  100% { opacity: 0; visibility: hidden; }
-}
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top, #020617 0%, #000814 45%, #020617 100%);
+      color: #e5e7eb;
+      overflow-x: hidden;
+    }
 
-/* PARTICLE CANVAS */
-#particle-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-}
+    html { scroll-behavior: smooth; }
 
-/* HEADER */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  padding: 20px 16px;
-  background: rgba(15,23,42,0.86);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(148,163,184,0.35);
-}
-.header-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  text-align: center;
-}
-.title {
-  font-size: 1.4rem;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  background: linear-gradient(90deg,#7dd3fc,#93c5fd,#e5e7eb);
-  -webkit-background-clip: text;
-  color: transparent;
-  text-shadow: 0 0 16px rgba(56,189,248,0.7);
-}
-.college {
-  font-size: 0.85rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: #9ca3af;
-  margin-top: 4px;
-}
+    /* --- Particle Canvas --- */
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+    }
 
-/* MAIN CONTAINER */
-.main {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 32px 16px 56px;
-}
+    /* --- Header --- */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 18px 16px;
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+    }
 
-/* HERO SECTION */
-.hero {
-  min-height: 70vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding-top: 48px;
-  padding-bottom: 40px;
-}
-.hero h1 {
-  font-size: clamp(2.2rem, 4vw, 2.8rem);
-  font-weight: 800;
-  line-height: 1.1;
-  background: linear-gradient(120deg,#38bdf8,#e5e7eb,#a5f3fc);
-  -webkit-background-clip: text;
-  color: transparent;
-  text-shadow: 0 0 30px rgba(56,189,248,0.7);
-  margin-bottom: 16px;
-}
-.hero-sub {
-  font-size: 1rem;
-  max-width: 720px;
-  color: #cbd5f5;
-  opacity: 0.92;
-  margin-bottom: 28px;
-}
-.hero-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 26px;
-}
-.badge {
-  padding: 4px 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(148,163,184,0.6);
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: #a5b4fc;
-  background: rgba(15,23,42,0.7);
-}
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
 
-/* HERO BUTTONS */
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 18px;
-}
-.btn {
-  border: none;
-  border-radius: 999px;
-  padding: 10px 22px;
-  font-size: 0.95rem;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-}
-.btn-primary {
-  background: linear-gradient(135deg,#2563eb,#0ea5e9);
-  color: #f9fafb;
-  box-shadow: 0 0 18px rgba(37,99,235,0.8);
-}
-.btn-primary:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 0 25px rgba(56,189,248,0.9);
-}
-.btn-secondary {
-  background: rgba(15,23,42,0.8);
-  color: #e5e7eb;
-  border: 1px solid rgba(148,163,184,0.7);
-}
-.btn-secondary:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 0 18px rgba(148,163,184,0.7);
-}
-.hero-note {
-  font-size: 0.8rem;
-  color: #9ca3af;
-}
+    .college {
+      font-size: 0.95rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: #bfdbfe;
+      margin-bottom: 6px;
+    }
 
-/* SECTIONS */
-.section {
-  margin-top: 56px;
-}
-.section-title {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-.section-sub {
-  text-align: center;
-  font-size: 0.95rem;
-  max-width: 640px;
-  margin: 0 auto 26px;
-  color: #9ca3af;
-}
+    .title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: linear-gradient(90deg, #7dd3fc, #93c5fd, #e5e7eb);
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 18px rgba(56, 189, 248, 0.8);
+    }
 
-/* GRID + CARDS */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
-  gap: 20px;
-}
-.card {
-  position: relative;
-  border-radius: 18px;
-  padding: 18px;
-  background: radial-gradient(circle at top left, rgba(56,189,248,0.25), transparent),
-              rgba(15,23,42,0.9);
-  border: 1px solid rgba(148,163,184,0.5);
-  box-shadow: 0 18px 40px rgba(15,23,42,0.9);
-  overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-}
-.card::before {
-  content: "";
-  position: absolute;
-  inset: -30%;
-  background: conic-gradient(from 90deg, rgba(56,189,248,0.4), transparent, rgba(129,140,248,0.4), transparent);
-  opacity: 0;
-  transition: opacity 0.25s ease;
-}
-.card-inner {
-  position: relative;
-  z-index: 1;
-}
-.card:hover {
-  transform: translateY(-6px) scale(1.02);
-  border-color: rgba(56,189,248,0.9);
-  box-shadow: 0 24px 60px rgba(56,189,248,0.4);
-}
-.card:hover::before {
-  opacity: 0.7;
-}
-.card h3 {
-  font-size: 1.05rem;
-  margin-bottom: 6px;
-}
-.card p {
-  font-size: 0.9rem;
-  color: #cbd5f5;
-}
+    /* --- Layout --- */
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 16px 56px;
+    }
 
-/* SIMPLE FADE ON SCROLL (class added by JS) */
-.fade-section {
-  opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-.fade-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+    /* --- Hero --- */
+    .hero {
+      text-align: center;
+      padding: 64px 16px 40px;
+    }
 
-/* FOOTER */
-footer {
-  border-top: 1px solid rgba(30,64,175,0.9);
-  padding: 20px 16px;
-  text-align: center;
-  font-size: 0.8rem;
-  color: #9ca3af;
-  background: rgba(15,23,42,0.96);
-  margin-top: 40px;
-}
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
 
-/* RESPONSIVE */
-@media (max-width: 640px) {
-  .hero { padding-top: 40px; }
-  .hero h1 { font-size: 2rem; }
-}
-</style>
+    .badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #a5b4fc;
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(120deg, #38bdf8, #e5e7eb, #a5f3fc);
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 30px rgba(56, 189, 248, 0.7);
+      margin-bottom: 14px;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      max-width: 720px;
+      margin: 0 auto 22px;
+      color: #cbd5f5;
+      opacity: 0.95;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 22px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      color: #f9fafb;
+      box-shadow: 0 0 18px rgba(37, 99, 235, 0.8);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.9);
+    }
+
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 18px rgba(148, 163, 184, 0.7);
+    }
+
+    .hero-note {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    /* --- Sections --- */
+    .section {
+      margin-top: 52px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .section-sub {
+      text-align: center;
+      font-size: 0.95rem;
+      max-width: 640px;
+      margin: 0 auto 26px;
+      color: #9ca3af;
+    }
+
+    /* --- Grid + Cards --- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      position: relative;
+      border-radius: 18px;
+      padding: 18px;
+      background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.25), transparent),
+                  rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.9);
+      overflow: hidden;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: conic-gradient(
+        from 90deg,
+        rgba(56, 189, 248, 0.4),
+        transparent,
+        rgba(129, 140, 248, 0.4),
+        transparent
+      );
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: rgba(56, 189, 248, 0.9);
+      box-shadow: 0 24px 60px rgba(56, 189, 248, 0.4);
+    }
+
+    .card:hover::before {
+      opacity: 0.7;
+    }
+
+    .card h3 {
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: #cbd5f5;
+    }
+
+    /* --- Command Center (bottom) --- */
+    .command {
+      margin-top: 56px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.7fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .command { grid-template-columns: 1fr; }
+    }
+
+    .radar-card,
+    .stats-card {
+      border-radius: 18px;
+      padding: 18px;
+      background: radial-gradient(circle at top, rgba(37, 99, 235, 0.3), transparent),
+                  rgba(15, 23, 42, 0.95);
+      border: 1px solid rgba(37, 99, 235, 0.7);
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.95);
+    }
+
+    .radar-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #a5b4fc;
+      margin-bottom: 10px;
+    }
+
+    .radar-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 0;
+    }
+
+    .radar {
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      border: 1px solid rgba(96, 165, 250, 0.6);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.8);
+    }
+
+    .radar::before {
+      content: "";
+      position: absolute;
+      inset: 16%;
+      border-radius: 50%;
+      border: 1px dashed rgba(125, 211, 252, 0.6);
+    }
+
+    .radar-line {
+      position: absolute;
+      width: 50%;
+      height: 2px;
+      background: linear-gradient(to right, rgba(125, 211, 252, 0.1), #7dd3fc);
+      top: 50%;
+      left: 50%;
+      transform-origin: left center;
+      animation: radar-spin 4s linear infinite;
+    }
+
+    .radar-dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #fbbf24;
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.9);
+      animation: radar-dot 3s ease-in-out infinite;
+    }
+
+    @keyframes radar-spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes radar-dot {
+      0% { transform: translate(20%, -20%); opacity: 0; }
+      20% { opacity: 1; }
+      100% { transform: translate(70%, -70%); opacity: 0; }
+    }
+
+    .stats-title {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #a5b4fc;
+      margin-bottom: 10px;
+    }
+
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: #e5e7eb;
+    }
+
+    .stat-value {
+      color: #7dd3fc;
+      font-weight: 600;
+    }
+
+    .stat-bar {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(30, 64, 175, 0.6);
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .stat-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22c55e, #a3e635);
+      animation: bar-pulse 4s ease-in-out infinite;
+    }
+
+    .stat-fill.grid {
+      background: linear-gradient(90deg, #f97316, #ef4444);
+      animation-delay: 1s;
+    }
+
+    .stat-fill.load {
+      background: linear-gradient(90deg, #38bdf8, #6366f1);
+      animation-delay: 2s;
+    }
+
+    @keyframes bar-pulse {
+      0% { width: 40%; }
+      50% { width: 85%; }
+      100% { width: 55%; }
+    }
+
+    .stat-note {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-top: 8px;
+    }
+
+    /* --- Footer --- */
+    footer {
+      border-top: 1px solid rgba(30, 64, 175, 0.9);
+      padding: 18px 16px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      background: rgba(15, 23, 42, 0.96);
+      margin-top: 40px;
+    }
+
+    /* --- Responsive tweak --- */
+    @media (max-width: 640px) {
+      .hero { padding-top: 40px; }
+      .hero h1 { font-size: 2.1rem; }
+    }
+  </style>
 </head>
 
 <body>
-<canvas id="particle-canvas"></canvas>
+  <canvas id="particle-canvas"></canvas>
 
-<!-- CINEMATIC INTRO -->
-<div id="intro-overlay">
-  <div id="intro-title">Launching Experience</div>
-  <div id="intro-text">AI Powered Adaptive Renewable Energy Optimizer</div>
-</div>
-
-<header>
-  <div class="header-inner">
-    <div class="title">AI Powered Adaptive Renewable Energy Optimizer</div>
-    <div class="college">Dayananda Sagar University</div>
-  </div>
-</header>
-
-<main class="main">
-  <!-- HERO -->
-  <section class="hero fade-section">
-    <div class="hero-badges">
-      <div class="badge">AI · Optimization · Forecasting</div>
-      <div class="badge">Cloud Executable · No Local Setup</div>
+  <header>
+    <div class="header-inner">
+      <div class="college">DAYANANDA SAGAR UNIVERSITY</div>
+      <div class="title">AI Powered Adaptive Renewable Energy Optimizer</div>
     </div>
+  </header>
 
-    <h1>Next-Gen Renewable Energy Intelligence System</h1>
-    <p class="hero-sub">
-      Experience an AI-driven optimizer that forecasts renewable output, intelligently routes
-      energy between grid, load and storage, and delivers immersive visual and auditory insight —
-      fully executed in the cloud.
-    </p>
+  <main class="main">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-badges">
+        <div class="badge">AI · Forecasting · Optimization</div>
+        <div class="badge">Cloud Executable · No Local Setup</div>
+      </div>
 
-    <div class="hero-actions">
-      <button class="btn btn-primary"
-        onclick="window.open('https://mybinder.org/v2/gh/Anandreddy-1010/AI-project/HEAD?filepath=MODEL.ipynb','_blank')">
-        🚀 Run Live Notebook
-      </button>
-      <button class="btn btn-secondary"
-        onclick="window.open('https://nbviewer.org/github/Anandreddy-1010/AI-project/blob/main/MODEL.ipynb','_blank')">
-        📘 View Notebook Online
-      </button>
-      <button class="btn btn-secondary" onclick="playAIWelcome()">
-        🔊 Play AI Welcome
-      </button>
-    </div>
+      <h1>Next-Gen Renewable Energy Intelligence System</h1>
+      <p class="hero-sub">
+        An AI-driven optimizer that forecasts renewable output, routes energy intelligently
+        between grid, load and storage, and is fully executable in the cloud for live demos
+        without local installation.
+      </p>
 
-    <div class="hero-note">
-      * Audio may require a tap depending on browser settings.
-    </div>
-  </section>
+      <div class="hero-actions">
+        <button class="btn btn-primary"
+          onclick="window.open('https://mybinder.org/v2/gh/Anandreddy-1010/AI-project/HEAD?filepath=MODEL.ipynb','_blank')">
+          🚀 Run Live Notebook
+        </button>
 
-  <!-- CAPABILITIES -->
-  <section class="section fade-section">
-    <h2 class="section-title">Core Capabilities</h2>
-    <p class="section-sub">
-      An integrated stack of forecasting, optimization, visualization and reporting — designed to
-      demonstrate real-world-ready intelligence in a single notebook.
-    </p>
+        <button class="btn btn-secondary"
+          onclick="window.open('https://nbviewer.org/github/Anandreddy-1010/AI-project/blob/main/MODEL.ipynb','_blank')">
+          📘 View Notebook Online
+        </button>
+      </div>
 
-    <div class="grid">
-      <article class="card">
-        <div class="card-inner">
-          <h3>📊 Forecast Engine</h3>
-          <p>Predict solar and wind trends over a 7-day horizon using scientific models and historical patterns.</p>
+      <div class="hero-note">
+        * Notebook opens in cloud — judges don't need Python or Jupyter installed.
+      </div>
+    </section>
+
+    <!-- CORE CAPABILITIES -->
+    <section class="section">
+      <h2 class="section-title">Core Capabilities</h2>
+      <p class="section-sub">
+        A single notebook that integrates forecasting, optimization, visualization and reporting
+        into one cohesive, demo-ready energy intelligence system.
+      </p>
+
+      <div class="grid">
+        <article class="card">
+          <div class="card-inner">
+            <h3>📊 Forecast Engine</h3>
+            <p>
+              Predicts solar and wind generation over a 7-day horizon using scientific modeling
+              and historical patterns for smarter planning.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-inner">
+            <h3>⚡ Energy Routing Logic</h3>
+            <p>
+              AI-guided decisions balance grid import, load requirements and battery charging/
+              discharging to improve efficiency.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-inner">
+            <h3>🗣 AI Voice Interface</h3>
+            <p>
+              Voice feedback in the notebook plus an AI welcome narration on this site for an
+              immersive, futuristic experience.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-inner">
+            <h3>📄 Automated Reporting</h3>
+            <p>
+              Generates structured summaries suitable for academic evaluations, project reviews
+              and professional presentations.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section class="section">
+      <h2 class="section-title">Technology Stack</h2>
+      <p class="section-sub">
+        Built entirely using open-source tools and deployed in a way that anyone can run it
+        with a single click from any browser.
+      </p>
+
+      <div class="grid">
+        <article class="card">
+          <div class="card-inner">
+            <h3>Python &amp; Jupyter Notebook</h3>
+            <p>
+              Core environment for modeling, data manipulation and interactive development.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-inner">
+            <h3>NumPy · Pandas · Plotly</h3>
+            <p>
+              Data pipelines, numerical computation and interactive visualizations for energy
+              trends and system behavior.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-inner">
+            <h3>ipywidgets · pyttsx3</h3>
+            <p>
+              Controls and voice guidance for hands-on, explorable dashboards in the notebook.
+            </p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-inner">
+            <h3>Binder · nbviewer</h3>
+            <p>
+              Cloud-based runtime and read-only views that remove all local installation barriers
+              for judges and reviewers.
+            </p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- COMMAND CENTER (BOTTOM) -->
+    <section class="section">
+      <h2 class="section-title">Live Command Center (Simulation View)</h2>
+      <p class="section-sub">
+        A visual simulation of how the optimizer might monitor and present system health and
+        status in a real-time deployment.
+      </p>
+
+      <div class="command">
+        <!-- Radar -->
+        <div class="radar-card">
+          <div class="radar-title">Forecast Scanner</div>
+          <div class="radar-wrapper">
+            <div class="radar">
+              <div class="radar-line"></div>
+              <div class="radar-dot"></div>
+            </div>
+          </div>
+          <div class="stat-note">
+            Simulated radar-style visualization to represent scanning upcoming solar &amp; wind patterns.
+          </div>
         </div>
-      </article>
 
-      <article class="card">
-        <div class="card-inner">
-          <h3>⚡ Energy Optimization</h3>
-          <p>AI-guided routing decisions to balance grid dependency, load requirements and battery health.</p>
+        <!-- Animated stats -->
+        <div class="stats-card">
+          <div class="stats-title">Energy Status Snapshot</div>
+
+          <div class="stat-row">
+            <span class="stat-label">Battery Utilization</span>
+            <span class="stat-value">Adaptive</span>
+          </div>
+          <div class="stat-bar">
+            <div class="stat-fill"></div>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-label">Grid Dependency</span>
+            <span class="stat-value">Minimizing</span>
+          </div>
+          <div class="stat-bar">
+            <div class="stat-fill grid"></div>
+          </div>
+
+          <div class="stat-row">
+            <span class="stat-label">Load Coverage</span>
+            <span class="stat-value">High</span>
+          </div>
+          <div class="stat-bar">
+            <div class="stat-fill load"></div>
+          </div>
+
+          <div class="stat-note">
+            Values animate to create a live-dashboard feel — the real logic runs inside the notebook
+            you launch from the top.
+          </div>
         </div>
-      </article>
+      </div>
+    </section>
+  </main>
 
-      <article class="card">
-        <div class="card-inner">
-          <h3>🗣 AI Voice Interface</h3>
-          <p>Integrated voice narration (in the notebook) and browser-based welcome assistant for immersive demos.</p>
-        </div>
-      </article>
+  <footer>
+    © 2025 AI Powered Adaptive Renewable Energy Optimizer · Dayananda Sagar University · NexGen Team
+  </footer>
 
-      <article class="card">
-        <div class="card-inner">
-          <h3>📄 Automated Reporting</h3>
-          <p>Generates structured summary outputs suitable for academic evaluation and professional reviews.</p>
-        </div>
-      </article>
-    </div>
-  </section>
+  <script>
+    /* PARTICLE BACKGROUND */
+    const canvas = document.getElementById("particle-canvas");
+    const ctx = canvas.getContext("2d");
+    let particles = [];
+    let w, h;
 
-  <!-- TECHNOLOGY STACK -->
-  <section class="section fade-section">
-    <h2 class="section-title">Technology Stack</h2>
-    <p class="section-sub">
-      Built entirely with open-source tools, engineered for zero-install execution via the cloud.
-    </p>
-    <div class="grid">
-      <article class="card">
-        <div class="card-inner">
-          <h3>Python · Jupyter</h3>
-          <p>Core environment for modeling, data handling and notebook-driven interaction.</p>
-        </div>
-      </article>
-      <article class="card">
-        <div class="card-inner">
-          <h3>NumPy · Pandas · Plotly</h3>
-          <p>Data processing, numerical computation and interactive visualizations.</p>
-        </div>
-      </article>
-      <article class="card">
-        <div class="card-inner">
-          <h3>ipywidgets · pyttsx3</h3>
-          <p>Interactive controls and offline voice guidance within the notebook runtime.</p>
-        </div>
-      </article>
-      <article class="card">
-        <div class="card-inner">
-          <h3>Binder · nbviewer</h3>
-          <p>One-click access to run and view the full project without local installation.</p>
-        </div>
-      </article>
-    </div>
-  </section>
-</main>
-
-<footer>
-  © 2025 AI Powered Adaptive Renewable Energy Optimizer · Dayananda Sagar University · NexGen Team
-</footer>
-
-<script>
-/* -------- PARTICLE BACKGROUND -------- */
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-let w, h;
-
-function resizeCanvas() {
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-function createParticles() {
-  particles = [];
-  const count = Math.floor((w * h) / 20000); // adaptive density
-  for (let i = 0; i < count; i++) {
-    particles.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: Math.random() * 2 + 0.5,
-      dx: (Math.random() - 0.5) * 0.4,
-      dy: (Math.random() - 0.5) * 0.4,
-      alpha: Math.random() * 0.6 + 0.2
-    });
-  }
-}
-createParticles();
-window.addEventListener('resize', createParticles);
-
-function drawParticles() {
-  ctx.clearRect(0, 0, w, h);
-  particles.forEach(p => {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(56,189,248,${p.alpha})`;
-    ctx.fill();
-    p.x += p.dx;
-    p.y += p.dy;
-    if (p.x < -10) p.x = w + 10;
-    if (p.x > w + 10) p.x = -10;
-    if (p.y < -10) p.y = h + 10;
-    if (p.y > h + 10) p.y = -10;
-  });
-  requestAnimationFrame(drawParticles);
-}
-drawParticles();
-
-/* -------- SCROLL FADE-IN -------- */
-const fadeSections = document.querySelectorAll('.fade-section');
-function handleScrollReveal() {
-  const trigger = window.innerHeight * 0.85;
-  fadeSections.forEach(sec => {
-    const rect = sec.getBoundingClientRect();
-    if (rect.top < trigger) {
-      sec.classList.add('visible');
+    function resizeCanvas() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
     }
-  });
-}
-window.addEventListener('scroll', handleScrollReveal);
-window.addEventListener('load', handleScrollReveal);
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
-/* -------- AI VOICE ASSISTANT -------- */
-const welcomeText =
-  "welcome to AI POWERED ADAPTIVE RENEWABLE ENERGY OPTIMIZER DESIGNED BY NEXGEN TEAM FROM DAYANANDA SAGAR UNIVERSITY";
+    function createParticles() {
+      particles = [];
+      const count = Math.floor((w * h) / 20000);
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          r: Math.random() * 2 + 0.5,
+          dx: (Math.random() - 0.5) * 0.4,
+          dy: (Math.random() - 0.5) * 0.4,
+          alpha: Math.random() * 0.6 + 0.2
+        });
+      }
+    }
+    createParticles();
 
-function playAIWelcome() {
-  if (!('speechSynthesis' in window)) {
-    alert('Speech synthesis not supported on this browser.');
-    return;
-  }
-  window.speechSynthesis.cancel(); // stop any previous
-  const utter = new SpeechSynthesisUtterance(welcomeText);
-  utter.rate = 1;
-  utter.pitch = 1;
-  utter.volume = 1;
-  window.speechSynthesis.speak(utter);
-}
+    function drawParticles() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(56,189,248,${p.alpha})`;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.x < -10) p.x = w + 10;
+        if (p.x > w + 10) p.x = -10;
+        if (p.y < -10) p.y = h + 10;
+        if (p.y > h + 10) p.y = -10;
+      });
+      requestAnimationFrame(drawParticles);
+    }
+    drawParticles();
 
-// Try auto-play shortly after load (may be blocked on some browsers)
-window.addEventListener('load', () => {
-  setTimeout(() => {
-    try { playAIWelcome(); } catch (e) {}
-  }, 2200); // after intro overlay
-});
-</script>
+    /* AI WELCOME VOICE (auto) */
+    window.addEventListener("load", () => {
+      const msg =
+        "welcome to AI POWERED ADAPTIVE RENEWABLE ENERGY OPTIMIZER designed by NexGen team from Dayananda Sagar University";
+      if ("speechSynthesis" in window) {
+        const utter = new SpeechSynthesisUtterance(msg);
+        utter.rate = 1;
+        utter.pitch = 1;
+        utter.volume = 1;
+        setTimeout(() => {
+          try { window.speechSynthesis.speak(utter); } catch (e) {}
+        }, 1500);
+      }
+    });
+  </script>
 </body>
 </html>
