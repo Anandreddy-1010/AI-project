@@ -511,30 +511,32 @@
     }
     drawParticles();
 
-    /* ===== AI WELCOME VOICE (AUTO) ===== */
-    const welcomeText =
-      "welcome to AI POWERED ADAPTIVE RENEWABLE energy optimizer designed by NexGen team from Dayananda Sagar University dept of computer science and engineering, A I M L";
+ /* ===== AI WELCOME VOICE (AUTO AFTER FIRST INTERACTION) ===== */
+const welcomeText =
+  "welcome to AI POWERED ADAPTIVE RENEWABLE energy optimizer designed by NexGen team from Dayananda Sagar University department of computer science and engineering A I M L";
 
-    window.addEventListener("load", () => {
-      if (!("speechSynthesis" in window)) return;
+let voicePlayed = false;
 
-      // Cancel any pending speech
-      window.speechSynthesis.cancel();
+function playWelcomeVoice() {
+  if (voicePlayed) return;
+  voicePlayed = true;
 
-      const utter = new SpeechSynthesisUtterance(welcomeText);
-      utter.rate = 1;
-      utter.pitch = 1;
-      utter.volume = 1;
+  if (!("speechSynthesis" in window)) return;
 
-      // Small delay improves chance of autoplay working
-      setTimeout(() => {
-        try {
-          window.speechSynthesis.speak(utter);
-        } catch (e) {
-          // Some browsers may still require a user interaction
-        }
-      }, 1500);
-    });
-  </script>
-</body>
-</html>
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(welcomeText);
+  utter.rate = 1;
+  utter.pitch = 1;
+  utter.volume = 1;
+
+  try {
+    window.speechSynthesis.speak(utter);
+  } catch (e) {
+    // ignore
+  }
+}
+
+// Trigger on ANY interaction
+["click", "scroll", "touchstart", "mousemove"].forEach(evt => {
+  window.addEventListener(evt, playWelcomeVoice, { once: true });
+});
