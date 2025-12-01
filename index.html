@@ -92,14 +92,17 @@
       text-align: center;
     }
 
-    /* LOGO */
+    /* LOGO (AIRES) */
     .header-logo {
-      width: 140px;
+      width: 130px;
       height: auto;
       margin-bottom: 12px;
+      border-radius: 999px;
+      background: transparent;
+      mix-blend-mode: screen;
       filter:
-        drop-shadow(0 0 20px rgba(56,189,248,0.8))
-        drop-shadow(0 0 34px rgba(129,140,248,0.6));
+        drop-shadow(0 0 22px rgba(56,189,248,0.95))
+        drop-shadow(0 0 40px rgba(59,130,246,0.7));
       animation: floatLogo 6s ease-in-out infinite;
     }
 
@@ -391,8 +394,12 @@
 
   <header>
     <div class="header-inner">
-      <!-- LOGO (SPACE IN NAME → USE %20) -->
-      <img class="header-logo" src="Project%20logo.jpg" alt="Project Logo">
+      <!-- AIRES LOGO (RAW GITHUB URL) -->
+      <img
+        class="header-logo"
+        src="https://raw.githubusercontent.com/Anandreddy-1010/AI-project/main/AIRES%20logo.png"
+        alt="AIRES Logo"
+      >
 
       <div class="college">DAYANANDA SAGAR UNIVERSITY</div>
       <div class="dept">DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING (AIML)</div>
@@ -505,7 +512,7 @@
           <div class="card-inner">
             <h3>NumPy · Pandas · Plotly</h3>
             <p>
-              Data handling, numerical computation and interactive visualizations for system 
+              Data handling, numerical computation and interactive visualizations for system
               performance and energy trends.
             </p>
           </div>
