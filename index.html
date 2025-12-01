@@ -7,34 +7,34 @@
 
   <style>
     /* ===== GLOBAL RESET ===== */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-    html, body {
-      transform: none !important;
-      writing-mode: horizontal-tb !important;
-      text-orientation: mixed !important;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: "Segoe UI", system-ui, sans-serif;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
       color: #e5e7eb;
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
+      background: radial-gradient(circle at top,#020617 0%,#000814 45%,#020617 100%);
     }
 
-    html { scroll-behavior: smooth; }
-
-    /* ===== LIVE BACKGROUND ===== */
-    /* Aurora + grid + particles canvas */
+    /* ===== AURORA + GRID BACKGROUND ===== */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      z-index: -3;
+      z-index: -4;
       background:
         radial-gradient(circle at 10% 0%, rgba(56,189,248,0.35), transparent 55%),
-        radial-gradient(circle at 80% 100%, rgba(37,99,235,0.5), transparent 55%),
+        radial-gradient(circle at 80% 100%, rgba(37,99,235,0.45), transparent 55%),
         radial-gradient(circle at 50% 40%, rgba(59,130,246,0.3), transparent 60%),
         #020617;
       filter: saturate(1.2);
@@ -44,29 +44,31 @@
       content: "";
       position: fixed;
       inset: 0;
-      z-index: -2;
+      z-index: -3;
       background-image:
-        linear-gradient(rgba(15,23,42,0.9), rgba(15,23,42,0.94)),
+        linear-gradient(rgba(15,23,42,0.92), rgba(15,23,42,0.96)),
         linear-gradient(90deg, rgba(30,64,175,0.5) 1px, transparent 1px),
         linear-gradient(180deg, rgba(30,64,175,0.5) 1px, transparent 1px);
       background-size:
         100% 100%,
-        60px 60px,
-        60px 60px;
+        70px 70px,
+        70px 70px;
       mix-blend-mode: screen;
-      animation: grid-move 18s linear infinite;
+      animation: gridMove 18s linear infinite;
       opacity: 0.9;
+      pointer-events: none;
     }
 
-    @keyframes grid-move {
+    @keyframes gridMove {
       0%   { background-position: 0 0, 0 0, 0 0; }
-      100% { background-position: 0 0, 60px 60px, 60px 60px; }
+      100% { background-position: 0 0, 70px 70px, 70px 70px; }
     }
 
-    #particle-canvas {
+    /* ===== CANVAS LAYERS ===== */
+    #bg-network {
       position: fixed;
       inset: 0;
-      z-index: -1;
+      z-index: -2;
       pointer-events: none;
     }
 
@@ -79,6 +81,7 @@
       background: rgba(15,23,42,0.96);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid rgba(148,163,184,0.4);
+      animation: fadeDown 0.8s ease-out;
     }
 
     .header-inner {
@@ -112,6 +115,26 @@
       -webkit-background-clip: text;
       color: transparent;
       text-shadow: 0 0 18px rgba(56,189,248,0.8);
+      position: relative;
+    }
+
+    /* subtle glow line under title */
+    .title::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: -8px;
+      width: 180px;
+      height: 2px;
+      background: radial-gradient(circle, rgba(96,165,250,0.9), transparent);
+      box-shadow: 0 0 18px rgba(96,165,250,0.9);
+      opacity: 0.85;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ===== MAIN LAYOUT ===== */
@@ -125,6 +148,12 @@
     .hero {
       text-align: center;
       padding: 56px 16px 36px;
+      animation: fadeUp 1s ease-out;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .hero-badges {
@@ -154,7 +183,15 @@
       -webkit-background-clip: text;
       color: transparent;
       text-shadow: 0 0 30px rgba(56,189,248,0.7);
-      margin-bottom: 14px;
+      margin-bottom: 10px;
+    }
+
+    .hero-tagline {
+      font-size: 0.95rem;
+      max-width: 640px;
+      margin: 0 auto 10px;
+      color: #9ca3af;
+      font-style: italic;
     }
 
     .hero-sub {
@@ -215,6 +252,12 @@
     /* ===== SECTIONS ===== */
     .section {
       margin-top: 52px;
+      animation: fadeUpSoft 0.9s ease-out;
+    }
+
+    @keyframes fadeUpSoft {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     .section-title {
@@ -303,15 +346,27 @@
       margin-top: 40px;
     }
 
+    footer span {
+      display: block;
+    }
+
+    footer .team-line {
+      margin-top: 4px;
+      color: #cbd5f5;
+    }
+
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 640px) {
       .hero { padding-top: 40px; }
-      .hero h1 { font-size: 2.1rem; }
+      .hero h1 { font-size: 2rem; }
+      .title { font-size: 1.3rem; }
     }
   </style>
 </head>
 
 <body>
-  <canvas id="particle-canvas"></canvas>
+  <!-- Neural network / energy canvas -->
+  <canvas id="bg-network"></canvas>
 
   <header>
     <div class="header-inner">
@@ -330,10 +385,14 @@
       </div>
 
       <h1>Next-Gen Renewable Energy Intelligence System</h1>
+      <p class="hero-tagline">
+        “Next-generation AI system for smarter renewable energy decisions.”
+      </p>
+
       <p class="hero-sub">
         An AI-driven optimizer that forecasts renewable output, routes energy intelligently
-        between grid, load and storage, and runs entirely in the cloud so judges can see
-        everything without installing Python or Jupyter.
+        between grid, load and storage, and runs entirely in the cloud — so mentors and judges
+        can explore the full system without installing anything.
       </p>
 
       <div class="hero-actions">
@@ -349,7 +408,7 @@
       </div>
 
       <div class="hero-note">
-        * Notebook opens in browser — no software installation needed for reviewers.
+        * Notebook opens directly in browser — no Python or Jupyter installation required.
       </div>
     </section>
 
@@ -357,8 +416,9 @@
     <section class="section">
       <h2 class="section-title">Core Capabilities</h2>
       <p class="section-sub">
-        A single notebook that combines forecasting, optimization, voice assistance and rich
-        visualizations into a cohesive renewable energy decision-support system.
+        A single notebook that combines forecasting, optimization, voice-assisted explanation
+        (inside the notebook) and visual analytics into a cohesive renewable energy decision
+        support system.
       </p>
 
       <div class="grid">
@@ -366,8 +426,8 @@
           <div class="card-inner">
             <h3>📊 Forecast Engine</h3>
             <p>
-              Predicts solar and wind generation trends using time-based patterns to prepare a
-              7-day outlook for smarter planning.
+              Predicts solar and wind generation trends using time-based patterns, creating a
+              short-term outlook that can guide planning and scheduling.
             </p>
           </div>
         </article>
@@ -376,18 +436,18 @@
           <div class="card-inner">
             <h3>⚡ Energy Routing Logic</h3>
             <p>
-              Balances grid import, load requirements and battery charging/discharging to reduce
-              grid dependency and improve efficiency.
+              Balances grid import, local load and battery charging/discharging to aim for lower
+              grid dependency and smarter energy usage.
             </p>
           </div>
         </article>
 
         <article class="card">
           <div class="card-inner">
-            <h3>🗣 AI Voice Interface</h3>
+            <h3>🗣 AI-Guided Experience</h3>
             <p>
-              Voice feedback inside the notebook and an AI welcome narration on this site create
-              an immersive, futuristic demo experience.
+              Inside the notebook, interactive widgets and voice feedback help explain what the
+              optimizer is doing at each step during the demo.
             </p>
           </div>
         </article>
@@ -396,7 +456,7 @@
           <div class="card-inner">
             <h3>📄 Automated Reporting</h3>
             <p>
-              Generates structured summary outputs suitable for academic evaluations, project
+              Generates structured result summaries suitable for academic evaluations, project
               reviews and professional presentations.
             </p>
           </div>
@@ -408,8 +468,8 @@
     <section class="section">
       <h2 class="section-title">Technology Stack</h2>
       <p class="section-sub">
-        Built completely on open-source tools and designed to be executed by anyone with a modern
-        browser, using cloud-based runtimes.
+        Built fully on open-source tools and deployed through cloud-based runtimes so that anyone
+        with a browser can run or inspect the project.
       </p>
 
       <div class="grid">
@@ -417,8 +477,8 @@
           <div class="card-inner">
             <h3>Python &amp; Jupyter Notebook</h3>
             <p>
-              Core environment for modeling, experimentation, and interactive documentation of
-              the entire energy optimizer.
+              The core environment for modeling, experimentation and interactive explanation of
+              the optimizer logic.
             </p>
           </div>
         </article>
@@ -427,8 +487,8 @@
           <div class="card-inner">
             <h3>NumPy · Pandas · Plotly</h3>
             <p>
-              Data processing, numerical computation and interactive charts for energy trends and
-              system behavior.
+              Data handling, numerical operations and interactive visualizations for energy trends
+              and system performance.
             </p>
           </div>
         </article>
@@ -437,8 +497,8 @@
           <div class="card-inner">
             <h3>ipywidgets · pyttsx3</h3>
             <p>
-              Interactive controls and offline voice guidance to explain system state directly
-              inside the notebook.
+              Sliders, toggles and voice feedback inside the notebook create a guided experience
+              during live demos.
             </p>
           </div>
         </article>
@@ -447,8 +507,8 @@
           <div class="card-inner">
             <h3>Binder · nbviewer</h3>
             <p>
-              One-click cloud runtime and static viewing so judges can run or inspect the project
-              instantly from any device.
+              One-click cloud runtime and static viewing so mentors and judges can instantly run
+              or review the full project without configuration.
             </p>
           </div>
         </article>
@@ -457,77 +517,104 @@
   </main>
 
   <footer>
-    © 2025 Dayananda Sagar University · Department of Computer Science and Engineering (AIML) · NexGen Team
+    <span>© 2025 Dayananda Sagar University · Department of Computer Science and Engineering (AIML)</span>
+    <span class="team-line">Developed by NexGen Team — DSU CSE(AIML), 2nd Year</span>
   </footer>
 
   <script>
-    /* ===== PARTICLE BACKGROUND ===== */
-    const canvas = document.getElementById("particle-canvas");
+    // ===== 3D-like Neural Network / Energy Web Background =====
+    const canvas = document.getElementById("bg-network");
     const ctx = canvas.getContext("2d");
-    let particles = [];
-    let w, h;
+
+    let nodes = [];
+    let width, height;
 
     function resizeCanvas() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      createNodes();
     }
-    resizeCanvas();
-    window.addEventListener("resize", () => {
-      resizeCanvas();
-      createParticles();
-    });
 
-    function createParticles() {
-      particles = [];
-      const count = Math.floor((w * h) / 22000);
+    function createNodes() {
+      nodes = [];
+      const count = Math.floor((width * height) / 24000); // adaptive density
       for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: Math.random() * 2 + 0.5,
-          dx: (Math.random() - 0.5) * 0.35,
-          dy: (Math.random() - 0.5) * 0.35,
-          alpha: Math.random() * 0.6 + 0.2
+        nodes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.4,
+          vy: (Math.random() - 0.5) * 0.4,
+          r: Math.random() * 2 + 0.7
         });
       }
     }
-    createParticles();
 
-    function drawParticles() {
-      ctx.clearRect(0, 0, w, h);
-      particles.forEach(p => {
+    function drawNetwork() {
+      ctx.clearRect(0, 0, width, height);
+
+      // fading "energy mist"
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, "rgba(15,23,42,0.0)");
+      gradient.addColorStop(1, "rgba(15,23,42,0.35)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      // draw lines and nodes
+      for (let i = 0; i < nodes.length; i++) {
+        const n1 = nodes[i];
+
+        // move nodes
+        n1.x += n1.vx;
+        n1.y += n1.vy;
+
+        if (n1.x < -20) n1.x = width + 20;
+        if (n1.x > width + 20) n1.x = -20;
+        if (n1.y < -20) n1.y = height + 20;
+        if (n1.y > height + 20) n1.y = -20;
+
+        // connections
+        for (let j = i + 1; j < nodes.length; j++) {
+          const n2 = nodes[j];
+          const dx = n1.x - n2.x;
+          const dy = n1.y - n2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 140) {
+            const alpha = 1 - dist / 140;
+            ctx.strokeStyle = "rgba(56,189,248," + (0.12 * alpha) + ")";
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(n1.x, n1.y);
+            ctx.lineTo(n2.x, n2.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // draw nodes on top
+      for (const n of nodes) {
+        const glow = ctx.createRadialGradient(
+          n.x, n.y, 0,
+          n.x, n.y, n.r * 3
+        );
+        glow.addColorStop(0, "rgba(125,211,252,0.9)");
+        glow.addColorStop(1, "rgba(56,189,248,0)");
+        ctx.fillStyle = glow;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(56,189,248,${p.alpha})`;
+        ctx.arc(n.x, n.y, n.r * 3, 0, Math.PI * 2);
         ctx.fill();
-        p.x += p.dx;
-        p.y += p.dy;
-        if (p.x < -10) p.x = w + 10;
-        if (p.x > w + 10) p.x = -10;
-        if (p.y < -10) p.y = h + 10;
-        if (p.y > h + 10) p.y = -10;
-      });
-      requestAnimationFrame(drawParticles);
+
+        ctx.fillStyle = "rgba(15,23,42,0.9)";
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(drawNetwork);
     }
-    drawParticles();
-    <script>
-let played = false;
 
-function playIntro() {
-    if (played) return;
-    played = true;
-
-    const audio = new Audio('ttsMP3.com_VoiceText_2025-12-19_4-44-8.mp3');
-    audio.volume = 1.0;
-
-    audio.play().catch((err) => {
-        console.log("Autoplay blocked, waiting for user action...");
-    });
-}
-
-// Play on ANY small interaction
-["click", "scroll", "mousemove", "touchstart"].forEach(event => {
-    window.addEventListener(event, playIntro, { once: true });
-});
-</script>
-
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    drawNetwork();
+  </script>
+</body>
+</html>
