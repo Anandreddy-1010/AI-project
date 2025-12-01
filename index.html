@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-    /* ===== GLOBAL RESET ===== */
     * {
       margin: 0;
       padding: 0;
@@ -18,20 +17,20 @@
     }
 
     body {
-      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-family: "Segoe UI", sans-serif;
       color: #e5e7eb;
+      background: radial-gradient(circle at top,#020617 0%,#000814 45%,#020617 100%);
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
-      background: radial-gradient(circle at top,#020617 0%,#000814 45%,#020617 100%);
     }
 
-    /* ===== LIVE AURORA + GRID BACKGROUND ===== */
+    /* ===== LIVE BACKGROUND AURORA ===== */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      z-index: -4;
+      z-index: -3;
       background:
         radial-gradient(circle at 10% 0%, rgba(56,189,248,0.40), transparent 55%),
         radial-gradient(circle at 80% 100%, rgba(37,99,235,0.50), transparent 55%),
@@ -41,47 +40,37 @@
       animation: auroraShift 22s ease-in-out infinite alternate;
     }
 
+    @keyframes auroraShift {
+      0% { filter: hue-rotate(0deg) saturate(1.1); }
+      50% { filter: hue-rotate(25deg) saturate(1.3); }
+      100% { filter: hue-rotate(-15deg) saturate(1.2); }
+    }
+
+    /* ===== HOLOGRAM GRID ===== */
     body::after {
       content: "";
       position: fixed;
       inset: 0;
-      z-index: -3;
+      z-index: -2;
       background-image:
-        linear-gradient(rgba(15,23,42,0.92), rgba(15,23,42,0.96)),
+        linear-gradient(rgba(15,23,42,0.92), rgba(15,23,42,0.95)),
         linear-gradient(90deg, rgba(30,64,175,0.45) 1px, transparent 1px),
         linear-gradient(180deg, rgba(30,64,175,0.45) 1px, transparent 1px);
-      background-size:
-        100% 100%,
-        70px 70px,
-        70px 70px;
-      mix-blend-mode: screen;
+      background-size: 100% 100%, 70px 70px, 70px 70px;
       animation: gridMove 18s linear infinite;
       opacity: 0.9;
-      pointer-events: none;
     }
 
     @keyframes gridMove {
-      0%   { background-position: 0 0, 0 0, 0 0; }
+      0% { background-position: 0 0, 0 0, 0 0; }
       100% { background-position: 0 0, 70px 70px, 70px 70px; }
     }
 
-    @keyframes auroraShift {
-      0% {
-        filter: hue-rotate(0deg) saturate(1.1);
-      }
-      50% {
-        filter: hue-rotate(25deg) saturate(1.3);
-      }
-      100% {
-        filter: hue-rotate(-15deg) saturate(1.2);
-      }
-    }
-
-    /* Canvas for neural network */
+    /* ===== NEURAL ENERGY NETWORK CANVAS ===== */
     #bg-network {
       position: fixed;
       inset: 0;
-      z-index: -2;
+      z-index: -1;
       pointer-events: none;
     }
 
@@ -89,609 +78,377 @@
     header {
       position: sticky;
       top: 0;
-      z-index: 20;
       padding: 18px 16px;
-      background: rgba(15,23,42,0.96);
+      background: rgba(15,23,42,0.92);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid rgba(148,163,184,0.4);
-      animation: fadeDown 0.8s ease-out;
+      z-index: 20;
     }
 
     .header-inner {
-      max-width: 1100px;
-      margin: 0 auto;
       text-align: center;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    /* ==== LOGO ==== */
+    .header-logo {
+      width: 140px;
+      height: auto;
+      margin-bottom: 12px;
+      filter: drop-shadow(0 0 20px rgba(56,189,248,0.75))
+              drop-shadow(0 0 30px rgba(96,165,250,0.4));
+      animation: floatLogo 6s ease-in-out infinite;
+    }
+
+    @keyframes floatLogo {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
     }
 
     .college {
       font-size: 0.95rem;
+      color: #bfdbfe;
       letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: #bfdbfe;
-      margin-bottom: 4px;
     }
 
     .dept {
-      font-size: 0.8rem;
+      font-size: 0.83rem;
+      color: #9ca3af;
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: #9ca3af;
       margin-bottom: 4px;
     }
 
     .title {
       font-size: 1.6rem;
       font-weight: 900;
-      text-transform: uppercase;
       letter-spacing: 0.06em;
+      text-transform: uppercase;
       background: linear-gradient(90deg,#7dd3fc,#93c5fd,#e5e7eb);
       -webkit-background-clip: text;
       color: transparent;
       text-shadow: 0 0 18px rgba(56,189,248,0.8);
       position: relative;
-      overflow: hidden;
     }
 
-    /* Glow line under title */
-    .title::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: -8px;
-      width: 190px;
-      height: 2px;
-      background: radial-gradient(circle, rgba(96,165,250,0.95), transparent);
-      box-shadow: 0 0 20px rgba(96,165,250,0.9);
-      opacity: 0.85;
-    }
-
-    /* Shine sweep over title */
+    /* Shine sweep */
     .title::before {
       content: "";
       position: absolute;
       top: 0;
-      left: -100%;
+      left: -110%;
       width: 100%;
       height: 100%;
       background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
       transform: skewX(-20deg);
-      animation: shine 8s infinite;
-      opacity: 0.6;
+      animation: shine 7s infinite;
     }
 
     @keyframes shine {
       0% { left: -110%; }
-      55% { left: 120%; }
+      50% { left: 120%; }
       100% { left: 120%; }
     }
 
-    @keyframes fadeDown {
-      from { opacity: 0; transform: translateY(-16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ===== MAIN LAYOUT ===== */
+    /* ===== MAIN ===== */
     .main {
       max-width: 1100px;
-      margin: 0 auto;
-      padding: 32px 16px 56px;
+      margin: auto;
+      padding: 40px 16px;
     }
 
     /* ===== HERO ===== */
     .hero {
       text-align: center;
-      padding: 56px 16px 36px;
-    }
-
-    .hero.reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .hero.reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+      padding-top: 40px;
     }
 
     .hero h1 {
-      font-size: clamp(2.1rem, 4vw, 2.7rem);
-      font-weight: 800;
-      line-height: 1.1;
+      font-size: 2.5rem;
       background: linear-gradient(120deg,#38bdf8,#e5e7eb,#a5f3fc);
       -webkit-background-clip: text;
       color: transparent;
-      text-shadow: 0 0 30px rgba(56,189,248,0.7);
-      margin-bottom: 10px;
+      text-shadow: 0 0 30px rgba(56,189,248,0.6);
     }
 
     .hero-tagline {
-      font-size: 0.95rem;
-      max-width: 640px;
-      margin: 0 auto 10px;
-      color: #9ca3af;
       font-style: italic;
+      font-size: 0.95rem;
+      color: #9ca3af;
+      margin-top: 6px;
     }
 
     .hero-sub {
-      font-size: 1rem;
-      max-width: 720px;
-      margin: 0 auto 22px;
+      max-width: 680px;
+      margin: 12px auto;
       color: #cbd5f5;
-      opacity: 0.95;
+      font-size: 1rem;
     }
 
     .hero-actions {
+      margin-top: 18px;
       display: flex;
-      flex-wrap: wrap;
       gap: 12px;
       justify-content: center;
-      margin-bottom: 10px;
+      flex-wrap: wrap;
     }
 
     .btn {
       border: none;
-      border-radius: 999px;
       padding: 10px 22px;
+      border-radius: 999px;
       font-size: 0.95rem;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-      position: relative;
-      overflow: hidden;
     }
 
     .btn-primary {
       background: linear-gradient(135deg,#2563eb,#0ea5e9);
-      color: #f9fafb;
-      box-shadow: 0 0 18px rgba(37,99,235,0.8);
-    }
-
-    /* Button glow pulse */
-    .btn-primary::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(circle, rgba(255,255,255,0.28), transparent 60%);
-      opacity: 0;
-      animation: btnPulse 4s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    @keyframes btnPulse {
-      0% { opacity: 0; transform: scale(0.5); }
-      40% { opacity: 0.9; transform: scale(1.05); }
-      100% { opacity: 0; transform: scale(1.2); }
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 0 25px rgba(56,189,248,0.9);
+      color: white;
+      box-shadow: 0 0 20px rgba(37,99,235,0.7);
     }
 
     .btn-secondary {
       background: rgba(15,23,42,0.8);
+      border: 1px solid #94a3b8;
       color: #e5e7eb;
-      border: 1px solid rgba(148,163,184,0.7);
-    }
-
-    .btn-secondary:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 0 18px rgba(148,163,184,0.7);
     }
 
     .hero-note {
-      font-size: 0.8rem;
+      margin-top: 6px;
       color: #9ca3af;
+      font-size: 0.82rem;
     }
 
-    /* ===== SECTIONS ===== */
-    .section {
-      margin-top: 52px;
-    }
-
-    .section.reveal {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .section.reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .section-title {
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .section-sub {
-      text-align: center;
-      font-size: 0.95rem;
-      max-width: 640px;
-      margin: 0 auto 26px;
-      color: #9ca3af;
-    }
-
-    /* ===== GRID + 3D TILT CARDS ===== */
+    /* ===== GRID CARDS ===== */
     .grid {
+      margin-top: 28px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
     }
 
     .card {
-      position: relative;
-      border-radius: 18px;
+      background: rgba(15,23,42,0.92);
+      border: 1px solid rgba(100,116,139,0.5);
       padding: 18px;
-      background:
-        radial-gradient(circle at top left, rgba(56,189,248,0.25), transparent),
-        rgba(15,23,42,0.92);
-      border: 1px solid rgba(148,163,184,0.5);
-      box-shadow: 0 18px 40px rgba(15,23,42,0.9);
-      overflow: hidden;
-      transform-style: preserve-3d;
-      transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -30%;
-      background: conic-gradient(
-        from 90deg,
-        rgba(56,189,248,0.4),
-        transparent,
-        rgba(129,140,248,0.4),
-        transparent
-      );
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-
-    .card-inner {
-      position: relative;
-      z-index: 1;
-      transform: translateZ(20px);
+      border-radius: 18px;
+      box-shadow: 0 0 28px rgba(15,23,42,0.9);
+      transition: 0.25s;
     }
 
     .card:hover {
-      box-shadow: 0 24px 60px rgba(56,189,248,0.4);
-      border-color: rgba(56,189,248,0.9);
-    }
-
-    .card:hover::before {
-      opacity: 0.7;
+      transform: translateY(-8px);
+      box-shadow: 0 0 40px rgba(56,189,248,0.55);
+      border-color: #38bdf8;
     }
 
     .card h3 {
-      font-size: 1.05rem;
       margin-bottom: 6px;
+      color: #e5e7eb;
     }
 
     .card p {
-      font-size: 0.9rem;
       color: #cbd5f5;
+      font-size: 0.92rem;
     }
 
-    /* ===== FOOTER ===== */
     footer {
-      border-top: 1px solid rgba(30,64,175,0.9);
-      padding: 18px 16px;
+      margin-top: 50px;
+      padding: 16px;
       text-align: center;
-      font-size: 0.8rem;
-      color: #9ca3af;
-      background: rgba(15,23,42,0.96);
-      margin-top: 40px;
-    }
-
-    footer span {
-      display: block;
-    }
-
-    footer .team-line {
-      margin-top: 4px;
-      color: #cbd5f5;
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 640px) {
-      .hero { padding-top: 40px; }
-      .hero h1 { font-size: 2rem; }
-      .title { font-size: 1.3rem; }
+      font-size: 0.85rem;
+      background: rgba(15,23,42,0.9);
+      border-top: 1px solid #1e3a8a;
     }
   </style>
 </head>
 
 <body>
-  <!-- Neural network / energy web canvas -->
-  <canvas id="bg-network"></canvas>
 
-  <header>
-    <div class="header-inner">
-      <div class="college">DAYANANDA SAGAR UNIVERSITY</div>
-      <div class="dept">DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING (AIML)</div>
-      <div class="title">AI POWERED ADAPTIVE RENEWABLE ENERGY OPTIMIZER</div>
+<!-- Neural Network Canvas -->
+<canvas id="bg-network"></canvas>
+
+<header>
+  <div class="header-inner">
+    <img class="header-logo" src="Project logo.jpg" alt="Logo">
+
+    <div class="college">DAYANANDA SAGAR UNIVERSITY</div>
+    <div class="dept">DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING (AIML)</div>
+    <div class="title">AI POWERED ADAPTIVE RENEWABLE ENERGY OPTIMIZER</div>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Next-Gen Renewable Energy Intelligence System</h1>
+
+    <p class="hero-tagline">“Next-generation AI system for smarter renewable energy decisions.”</p>
+
+    <p class="hero-sub">
+      An AI-driven optimizer that forecasts renewable output, routes energy intelligently between 
+      grid, load and storage, and runs entirely in the cloud — so mentors and judges can explore 
+      the full system without installing anything.
+    </p>
+
+    <div class="hero-actions">
+      <button class="btn btn-primary"
+        onclick="window.open('https://mybinder.org/v2/gh/Anandreddy-1010/AI-project/HEAD?filepath=MODEL.ipynb','_blank')">
+        🚀 Run Live Notebook
+      </button>
+
+      <button class="btn btn-secondary"
+        onclick="window.open('https://nbviewer.org/github/Anandreddy-1010/AI-project/blob/main/MODEL.ipynb','_blank')">
+        📘 View Notebook Online
+      </button>
     </div>
-  </header>
 
-  <main class="main">
-    <!-- HERO -->
-    <section class="hero reveal">
-      <h1>Next-Gen Renewable Energy Intelligence System</h1>
-      <p class="hero-tagline">
-        “Next-generation AI system for smarter renewable energy decisions.”
-      </p>
+    <p class="hero-note">* Notebook opens directly in browser — no Python or Jupyter installation required.</p>
+  </section>
 
-      <p class="hero-sub">
-        An AI-driven optimizer that forecasts renewable output, routes energy intelligently
-        between grid, load and storage, and runs entirely in the cloud — so mentors and judges
-        can explore the full system without installing anything.
-      </p>
+  <!-- CORE CAPABILITIES -->
+  <section class="section">
+    <h2 class="section-title">Core Capabilities</h2>
+    <p class="section-sub">
+      A notebook that unifies forecasting, optimization, guided demo flow and analytics into a 
+      streamlined renewable energy decision tool.
+    </p>
 
-      <div class="hero-actions">
-        <button class="btn btn-primary"
-          onclick="window.open('https://mybinder.org/v2/gh/Anandreddy-1010/AI-project/HEAD?filepath=MODEL.ipynb','_blank')">
-          🚀 Run Live Notebook
-        </button>
-
-        <button class="btn btn-secondary"
-          onclick="window.open('https://nbviewer.org/github/Anandreddy-1010/AI-project/blob/main/MODEL.ipynb','_blank')">
-          📘 View Notebook Online
-        </button>
+    <div class="grid">
+      <div class="card">
+        <h3>📊 Forecast Engine</h3>
+        <p>Predicts solar and wind patterns using time-based trends.</p>
       </div>
 
-      <div class="hero-note">
-        * Notebook opens directly in browser — no Python or Jupyter installation required.
+      <div class="card">
+        <h3>⚡ Energy Routing Logic</h3>
+        <p>Balances grid, load and battery intelligently.</p>
       </div>
-    </section>
 
-    <!-- CORE CAPABILITIES -->
-    <section class="section reveal">
-      <h2 class="section-title">Core Capabilities</h2>
-      <p class="section-sub">
-        A single notebook that combines forecasting, optimization, guided explanation and visual
-        analytics into a cohesive renewable energy decision-support system.
-      </p>
-
-      <div class="grid">
-        <article class="card">
-          <div class="card-inner">
-            <h3>📊 Forecast Engine</h3>
-            <p>
-              Predicts solar and wind generation trends using time-based patterns, creating a
-              short-term outlook that can guide planning and scheduling.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-inner">
-            <h3>⚡ Energy Routing Logic</h3>
-            <p>
-              Balances grid import, local load and battery charging/discharging to aim for lower
-              grid dependency and smarter energy usage.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-inner">
-            <h3>🗣 Guided Demo Experience</h3>
-            <p>
-              Inside the notebook, interactive widgets and voice feedback (via pyttsx3) help
-              explain what the optimizer is doing during a live demonstration.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-inner">
-            <h3>📄 Automated Reporting</h3>
-            <p>
-              Generates structured result summaries suitable for academic evaluations, project
-              reviews and professional presentations.
-            </p>
-          </div>
-        </article>
+      <div class="card">
+        <h3>🗣 Guided Demo Experience</h3>
+        <p>Interactive widgets and optional voice explanation inside the notebook.</p>
       </div>
-    </section>
 
-    <!-- TECHNOLOGY STACK -->
-    <section class="section reveal">
-      <h2 class="section-title">Technology Stack</h2>
-      <p class="section-sub">
-        Built fully on open-source tools and deployed through browser-based runtimes so that
-        anyone can run or inspect the project from any device.
-      </p>
-
-      <div class="grid">
-        <article class="card">
-          <div class="card-inner">
-            <h3>Python &amp; Jupyter Notebook</h3>
-            <p>
-              The core environment for modeling, experimentation and interactive explanation of
-              the optimizer logic.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-inner">
-            <h3>NumPy · Pandas · Plotly</h3>
-            <p>
-              Data handling, numerical operations and interactive visualizations for energy
-              trends and system performance.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-inner">
-            <h3>ipywidgets · pyttsx3</h3>
-            <p>
-              Sliders, toggles and voice feedback inside the notebook create a guided experience
-              during live demos.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-inner">
-            <h3>Binder · nbviewer</h3>
-            <p>
-              One-click cloud runtime and static viewing so mentors and judges can instantly run
-              or review the full project without configuration.
-            </p>
-          </div>
-        </article>
+      <div class="card">
+        <h3>📄 Auto Reporting</h3>
+        <p>Generates structured summaries for evaluation.</p>
       </div>
-    </section>
-  </main>
+    </div>
+  </section>
 
-  <footer>
-    <span>© 2025 Dayananda Sagar University · Department of Computer Science and Engineering (AIML)</span>
-    <span class="team-line">Developed by NexGen Team — DSU CSE(AIML), 2nd Year</span>
-  </footer>
+  <!-- TECHNOLOGY STACK -->
+  <section class="section">
+    <h2 class="section-title">Technology Stack</h2>
+    <p class="section-sub">
+      Powered by open-source tools with instant cloud execution for universal accessibility.
+    </p>
 
-  <script>
-    // ===== 3D Neural Network / Energy Web Background =====
-    const canvas = document.getElementById("bg-network");
-    const ctx = canvas.getContext("2d");
+    <div class="grid">
+      <div class="card">
+        <h3>Python & Jupyter</h3>
+        <p>Interactive environment for modeling and demonstration.</p>
+      </div>
 
-    let nodes = [];
-    let width, height;
+      <div class="card">
+        <h3>NumPy · Pandas · Plotly</h3>
+        <p>Data processing and visualization.</p>
+      </div>
 
-    function resizeCanvas() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      createNodes();
-    }
+      <div class="card">
+        <h3>ipywidgets · pyttsx3</h3>
+        <p>Interactive controls + optional voice explanation.</p>
+      </div>
 
-    function createNodes() {
-      nodes = [];
-      const count = Math.floor((width * height) / 24000); // adaptive density
-      for (let i = 0; i < count; i++) {
-        nodes.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          r: Math.random() * 2 + 0.7
-        });
-      }
-    }
+      <div class="card">
+        <h3>Binder · nbviewer</h3>
+        <p>One-click cloud execution and online viewing.</p>
+      </div>
+    </div>
+  </section>
 
-    function drawNetwork() {
-      ctx.clearRect(0, 0, width, height);
+</main>
 
-      // soft energy mist
-      const gradient = ctx.createLinearGradient(0, 0, width, height);
-      gradient.addColorStop(0, "rgba(15,23,42,0.0)");
-      gradient.addColorStop(1, "rgba(15,23,42,0.35)");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
+<footer>
+  © 2025 · Dayananda Sagar University · CSE (AIML)  
+  <br> Developed by NexGen Team — 2nd Year
+</footer>
 
-      // connections
-      for (let i = 0; i < nodes.length; i++) {
-        const n1 = nodes[i];
+<script>
+/*======= 3D Neural Network Background =======*/
+const canvas = document.getElementById("bg-network");
+const ctx = canvas.getContext("2d");
+let nodes = [], width, height;
 
-        n1.x += n1.vx;
-        n1.y += n1.vy;
+function resizeCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+  createNodes();
+}
 
-        if (n1.x < -20) n1.x = width + 20;
-        if (n1.x > width + 20) n1.x = -20;
-        if (n1.y < -20) n1.y = height + 20;
-        if (n1.y > height + 20) n1.y = -20;
-
-        for (let j = i + 1; j < nodes.length; j++) {
-          const n2 = nodes[j];
-          const dx = n1.x - n2.x;
-          const dy = n1.y - n2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 140) {
-            const alpha = 1 - dist / 140;
-            ctx.strokeStyle = "rgba(56,189,248," + (0.12 * alpha) + ")";
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(n1.x, n1.y);
-            ctx.lineTo(n2.x, n2.y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      // draw nodes
-      for (const n of nodes) {
-        const glow = ctx.createRadialGradient(
-          n.x, n.y, 0,
-          n.x, n.y, n.r * 3
-        );
-        glow.addColorStop(0, "rgba(125,211,252,0.9)");
-        glow.addColorStop(1, "rgba(56,189,248,0)");
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r * 3, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = "rgba(15,23,42,0.9)";
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      requestAnimationFrame(drawNetwork);
-    }
-
-    window.addEventListener("resize", resizeCanvas);
-    resizeCanvas();
-    drawNetwork();
-
-    // ===== Scroll Reveal for sections =====
-    const reveals = document.querySelectorAll(".reveal");
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.18 }
-    );
-    reveals.forEach(el => observer.observe(el));
-
-    // ===== 3D Tilt Effect on Cards =====
-    const cards = document.querySelectorAll(".card");
-    cards.forEach(card => {
-      card.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        const rotateX = ((y - centerY) / centerY) * -8; // tilt up/down
-        const rotateY = ((x - centerX) / centerX) * 8;  // tilt left/right
-
-        card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-      });
-
-      card.addEventListener("mouseleave", () => {
-        card.style.transform = "rotateX(0deg) rotateY(0deg)";
-      });
+function createNodes() {
+  nodes = [];
+  const count = Math.floor((width * height) / 24000);
+  for (let i = 0; i < count; i++) {
+    nodes.push({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r: Math.random() * 2 + 1
     });
-  </script>
+  }
+}
+
+function drawNetwork() {
+  ctx.clearRect(0, 0, width, height);
+
+  for (let i = 0; i < nodes.length; i++) {
+    let n1 = nodes[i];
+    n1.x += n1.vx;
+    n1.y += n1.vy;
+
+    if (n1.x < 0) n1.x = width;
+    if (n1.x > width) n1.x = 0;
+    if (n1.y < 0) n1.y = height;
+    if (n1.y > height) n1.y = 0;
+
+    for (let j = i + 1; j < nodes.length; j++) {
+      let n2 = nodes[j];
+      let dx = n1.x - n2.x;
+      let dy = n1.y - n2.y;
+      let dist = Math.sqrt(dx*dx + dy*dy);
+
+      if (dist < 140) {
+        ctx.strokeStyle = `rgba(56,189,248,${1 - dist/140})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(n1.x, n1.y);
+        ctx.lineTo(n2.x, n2.y);
+        ctx.stroke();
+      }
+    }
+
+    ctx.fillStyle = "#38bdf8";
+    ctx.beginPath();
+    ctx.arc(n1.x, n1.y, n1.r, 0, Math.PI*2);
+    ctx.fill();
+  }
+
+  requestAnimationFrame(drawNetwork);
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+drawNetwork();
+</script>
+
 </body>
 </html>
