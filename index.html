@@ -510,47 +510,24 @@
       requestAnimationFrame(drawParticles);
     }
     drawParticles();
-<script>
-/* ===== FINAL WORKING AI VOICE FOR WINDOWS PC ===== */
+    <script>
+let played = false;
 
-const welcomeText =
-  "Welcome to AI Powered Adaptive Renewable Energy Optimizer, designed by NexGen Team from Dayananda Sagar University, Department of Computer Science and Engineering A I M L.";
+function playIntro() {
+    if (played) return;
+    played = true;
 
-let voicePlayed = false;
+    const audio = new Audio('ttsMP3.com_VoiceText_2025-12-19_4-44-8.mp3');
+    audio.volume = 1.0;
 
-// Force speech engine to wake up
-function warmUpTTS() {
-  const s = new SpeechSynthesisUtterance("");
-  speechSynthesis.speak(s);
+    audio.play().catch((err) => {
+        console.log("Autoplay blocked, waiting for user action...");
+    });
 }
 
-// Main function to speak
-function playVoice() {
-  if (voicePlayed) return;
-  voicePlayed = true;
-
-  const utter = new SpeechSynthesisUtterance(welcomeText);
-  utter.rate = 1;
-  utter.pitch = 1;
-  utter.volume = 1;
-
-  speechSynthesis.cancel();   // clear queue
-  warmUpTTS();                // wake speech engine
-
-  setTimeout(() => {
-    speechSynthesis.speak(utter);
-  }, 300);                    // small delay = guaranteed play
-}
-
-// Trigger on ANY interaction
-["click", "mousemove", "scroll", "keydown"].forEach(evt => {
-  window.addEventListener(evt, playVoice, { once: true });
-});
-
-// Fallback: auto-try after load
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    playVoice();
-  }, 1500);
+// Play on ANY small interaction
+["click", "scroll", "mousemove", "touchstart"].forEach(event => {
+    window.addEventListener(event, playIntro, { once: true });
 });
 </script>
+
