@@ -6,26 +6,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
       color: #e5e7eb;
       overflow-x: hidden;
       min-height: 100vh;
-      position: relative;
       background: radial-gradient(circle at top,#020617 0%,#000814 45%,#020617 100%);
     }
 
-    /* ===== LIVE AURORA BACKGROUND ===== */
+    /* ===== AURORA BACKGROUND ===== */
     body::before {
       content: "";
       position: fixed;
@@ -36,14 +29,13 @@
         radial-gradient(circle at 80% 100%, rgba(37,99,235,0.50), transparent 55%),
         radial-gradient(circle at 50% 40%, rgba(59,130,246,0.35), transparent 60%),
         #020617;
-      filter: saturate(1.2);
       animation: auroraShift 22s ease-in-out infinite alternate;
     }
 
     @keyframes auroraShift {
-      0% { filter: hue-rotate(0deg) saturate(1.1); }
-      50% { filter: hue-rotate(25deg) saturate(1.3); }
-      100% { filter: hue-rotate(-15deg) saturate(1.2); }
+      0% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(25deg); }
+      100% { filter: hue-rotate(-15deg); }
     }
 
     /* ===== HOLOGRAM GRID ===== */
@@ -58,16 +50,14 @@
         linear-gradient(180deg, rgba(30,64,175,0.45) 1px, transparent 1px);
       background-size: 100% 100%, 70px 70px, 70px 70px;
       animation: gridMove 18s linear infinite;
-      opacity: 0.9;
       pointer-events: none;
     }
 
     @keyframes gridMove {
-      0% { background-position: 0 0, 0 0, 0 0; }
-      100% { background-position: 0 0, 70px 70px, 70px 70px; }
+      to { background-position: 0 0, 70px 70px, 70px 70px; }
     }
 
-    /* ===== NEURAL ENERGY NETWORK CANVAS ===== */
+    /* ===== NEURAL NETWORK CANVAS ===== */
     #bg-network {
       position: fixed;
       inset: 0;
@@ -80,7 +70,7 @@
       position: sticky;
       top: 0;
       z-index: 20;
-      padding: 18px 16px;
+      padding: 20px 16px;
       background: rgba(15,23,42,0.94);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(148,163,184,0.4);
@@ -92,120 +82,83 @@
       text-align: center;
     }
 
-    /* LOGO (AIRES) */
+    /* ===== NEW UPDATED LOGO ===== */
     .header-logo {
-      width: 130px;
+      width: 150px;
       height: auto;
       margin-bottom: 12px;
-      border-radius: 999px;
-      background: transparent;
+      border-radius: 50%;
       mix-blend-mode: screen;
       filter:
-        drop-shadow(0 0 22px rgba(56,189,248,0.95))
-        drop-shadow(0 0 40px rgba(59,130,246,0.7));
+        drop-shadow(0 0 18px rgba(56,189,248,0.8))
+        drop-shadow(0 0 35px rgba(56,189,248,0.5));
       animation: floatLogo 6s ease-in-out infinite;
     }
 
     @keyframes floatLogo {
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(-10px); }
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
       100% { transform: translateY(0); }
     }
 
     .college {
       font-size: 0.95rem;
       letter-spacing: 0.28em;
-      text-transform: uppercase;
       color: #bfdbfe;
+      text-transform: uppercase;
     }
 
     .dept {
       font-size: 0.8rem;
       letter-spacing: 0.22em;
-      text-transform: uppercase;
       color: #9ca3af;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      text-transform: uppercase;
     }
 
     .title {
       font-size: 1.6rem;
       font-weight: 900;
       letter-spacing: 0.06em;
-      text-transform: uppercase;
       background: linear-gradient(90deg,#7dd3fc,#93c5fd,#e5e7eb);
       -webkit-background-clip: text;
       color: transparent;
       text-shadow: 0 0 18px rgba(56,189,248,0.86);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .title::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -110%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent);
-      transform: skewX(-20deg);
-      animation: shine 7s infinite;
-    }
-
-    .title::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: -8px;
-      width: 190px;
-      height: 2px;
-      background: radial-gradient(circle, rgba(96,165,250,0.95), transparent);
-      box-shadow: 0 0 18px rgba(96,165,250,0.9);
-    }
-
-    @keyframes shine {
-      0% { left: -110%; }
-      50% { left: 120%; }
-      100% { left: 120%; }
     }
 
     /* ===== MAIN ===== */
     .main {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 40px 16px 56px;
+      padding: 40px 16px 70px;
     }
 
     /* ===== HERO ===== */
     .hero {
       text-align: center;
-      padding-top: 40px;
+      padding-top: 30px;
     }
 
     .hero h1 {
-      font-size: clamp(2.1rem, 4vw, 2.7rem);
-      font-weight: 800;
-      line-height: 1.1;
+      font-size: 2.3rem;
       background: linear-gradient(120deg,#38bdf8,#e5e7eb,#a5f3fc);
       -webkit-background-clip: text;
       color: transparent;
-      text-shadow: 0 0 30px rgba(56,189,248,0.7);
+      text-shadow: 0 0 25px rgba(56,189,248,0.7);
       margin-bottom: 8px;
     }
 
     .hero-tagline {
       font-size: 0.95rem;
-      max-width: 640px;
-      margin: 0 auto 8px;
       color: #9ca3af;
       font-style: italic;
+      margin-bottom: 6px;
     }
 
     .hero-sub {
       font-size: 1rem;
-      max-width: 720px;
-      margin: 0 auto 22px;
+      max-width: 680px;
+      margin: 0 auto 20px;
       color: #cbd5f5;
     }
 
@@ -218,188 +171,95 @@
     }
 
     .btn {
-      border: none;
       border-radius: 999px;
       padding: 10px 22px;
       font-size: 0.95rem;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: none;
     }
 
     .btn-primary {
       background: linear-gradient(135deg,#2563eb,#0ea5e9);
-      color: #f9fafb;
-      box-shadow: 0 0 18px rgba(37,99,235,0.8);
-    }
-
-    .btn-primary::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(circle, rgba(255,255,255,0.25), transparent 60%);
-      opacity: 0;
-      animation: btnPulse 4s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    @keyframes btnPulse {
-      0% { opacity: 0; transform: scale(0.5); }
-      40% { opacity: 1; transform: scale(1.05); }
-      100% { opacity: 0; transform: scale(1.2); }
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 0 25px rgba(56,189,248,0.9);
+      color: white;
     }
 
     .btn-secondary {
       background: rgba(15,23,42,0.8);
-      color: #e5e7eb;
-      border: 1px solid rgba(148,163,184,0.75);
-    }
-
-    .btn-secondary:hover {
-      transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 0 18px rgba(148,163,184,0.7);
-    }
-
-    .hero-note {
-      font-size: 0.8rem;
-      color: #9ca3af;
+      color: white;
+      border: 1px solid rgba(148,163,184,0.8);
     }
 
     /* ===== SECTIONS ===== */
     .section {
-      margin-top: 52px;
+      margin-top: 50px;
     }
 
     .section-title {
       text-align: center;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 700;
+      color: #7dd3fc;
       margin-bottom: 10px;
     }
 
     .section-sub {
       text-align: center;
-      font-size: 0.95rem;
+      font-size: 1rem;
       max-width: 640px;
-      margin: 0 auto 26px;
+      margin: 0 auto 25px;
       color: #9ca3af;
     }
 
-    /* ===== GRID + CARDS ===== */
+    /* ===== GRID ===== */
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 22px;
     }
 
     .card {
-      position: relative;
-      border-radius: 18px;
+      background: rgba(15,23,42,0.85);
+      border-radius: 16px;
+      border: 1px solid rgba(56,189,248,0.4);
       padding: 18px;
-      background:
-        radial-gradient(circle at top left, rgba(56,189,248,0.25), transparent),
-        rgba(15,23,42,0.92);
-      border: 1px solid rgba(148,163,184,0.5);
-      box-shadow: 0 18px 40px rgba(15,23,42,0.9);
-      overflow: hidden;
-      transform-style: preserve-3d;
-      transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease;
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: -30%;
-      background: conic-gradient(
-        from 90deg,
-        rgba(56,189,248,0.4),
-        transparent,
-        rgba(129,140,248,0.4),
-        transparent
-      );
-      opacity: 0;
-      transition: opacity 0.25s ease;
-    }
-
-    .card-inner {
-      position: relative;
-      z-index: 1;
-      transform: translateZ(18px);
-    }
-
-    .card:hover {
-      border-color: rgba(56,189,248,0.9);
-      box-shadow: 0 24px 60px rgba(56,189,248,0.4);
-    }
-
-    .card:hover::before {
-      opacity: 0.7;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.5);
     }
 
     .card h3 {
-      font-size: 1.05rem;
+      font-size: 1.1rem;
       margin-bottom: 6px;
+      color: #93c5fd;
     }
 
     .card p {
-      font-size: 0.9rem;
       color: #cbd5f5;
+      font-size: 0.9rem;
     }
 
-    /* ===== FOOTER ===== */
     footer {
       border-top: 1px solid rgba(30,64,175,0.9);
-      padding: 18px 16px;
+      padding: 18px;
       text-align: center;
-      font-size: 0.8rem;
-      color: #9ca3af;
       background: rgba(15,23,42,0.96);
-      margin-top: 40px;
+      color: #94a3b8;
     }
 
-    footer span {
-      display: block;
-    }
-
-    footer .team-line {
-      margin-top: 4px;
-      color: #cbd5f5;
-    }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 640px) {
-      .hero { padding-top: 32px; }
-      .hero h1 { font-size: 2.1rem; }
-      .title { font-size: 1.3rem; }
-    }
   </style>
 </head>
 
 <body>
-  <!-- Neural network / energy web canvas -->
+
+  <!-- Neural network background -->
   <canvas id="bg-network"></canvas>
 
+  <!-- HEADER -->
   <header>
     <div class="header-inner">
-      <!-- AIRES LOGO (RAW GITHUB URL) -->
-      <img
-        class="header-logo"
-        src="https://raw.githubusercontent.com/Anandreddy-1010/AI-project/main/AIRES%20logo.png"
-        alt="AIRES Logo"
-      >
+
+      <!-- UPDATED LOGO -->
+      <img class="header-logo"
+        src="https://raw.githubusercontent.com/Anandreddy-1010/AI-project/main/AIRES_LOGO.png"
+        alt="AIRES Logo">
 
       <div class="college">DAYANANDA SAGAR UNIVERSITY</div>
       <div class="dept">DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING (AIML)</div>
@@ -407,13 +267,13 @@
     </div>
   </header>
 
+  <!-- MAIN CONTENT -->
   <main class="main">
+
     <!-- HERO -->
     <section class="hero">
       <h1>Next-Gen Renewable Energy Intelligence System</h1>
-      <p class="hero-tagline">
-        “Next-generation AI system for smarter renewable energy decisions.”
-      </p>
+      <p class="hero-tagline">“Next-generation AI system for smarter renewable energy decisions.”</p>
 
       <p class="hero-sub">
         An AI-driven optimizer that forecasts renewable output, routes energy intelligently between
@@ -432,60 +292,35 @@
           📘 View Notebook Online
         </button>
       </div>
-
-      <div class="hero-note">
-        * Notebook opens directly in browser — no Python or Jupyter installation required.
-      </div>
     </section>
 
     <!-- CORE CAPABILITIES -->
     <section class="section">
       <h2 class="section-title">Core Capabilities</h2>
       <p class="section-sub">
-        A single notebook that combines forecasting, optimization, guided demonstration and visual
-        analytics into a cohesive renewable energy decision-support system.
+        Forecasting, optimization, guided demonstration and analytics combined into a single renewable energy intelligence system.
       </p>
 
       <div class="grid">
-        <article class="card">
-          <div class="card-inner">
-            <h3>📊 Forecast Engine</h3>
-            <p>
-              Predicts solar and wind generation trends using time-based patterns to provide a
-              short-term outlook for planning.
-            </p>
-          </div>
-        </article>
+        <div class="card">
+          <h3>📊 Forecast Engine</h3>
+          <p>Predicts solar and wind energy trends for short-term power planning.</p>
+        </div>
 
-        <article class="card">
-          <div class="card-inner">
-            <h3>⚡ Energy Routing Logic</h3>
-            <p>
-              Balances grid import, local demand and battery charging/discharging to reduce grid
-              dependency and improve efficiency.
-            </p>
-          </div>
-        </article>
+        <div class="card">
+          <h3>⚡ Energy Routing Logic</h3>
+          <p>Balances grid power, local demand, and battery activity through smart optimization.</p>
+        </div>
 
-        <article class="card">
-          <div class="card-inner">
-            <h3>🗣 Guided Demo Experience</h3>
-            <p>
-              Inside the notebook, interactive widgets and voice feedback (via pyttsx3) explain what
-              the optimizer is doing during a live demonstration.
-            </p>
-          </div>
-        </article>
+        <div class="card">
+          <h3>🗣 Guided Demo</h3>
+          <p>Interactive widgets and voice feedback explains system behavior in real-time.</p>
+        </div>
 
-        <article class="card">
-          <div class="card-inner">
-            <h3>📄 Automated Reporting</h3>
-            <p>
-              Generates structured summaries suitable for academic evaluations, project reviews and
-              future extension work.
-            </p>
-          </div>
-        </article>
+        <div class="card">
+          <h3>📄 Automated Reporting</h3>
+          <p>Generates structured system insights for academic and project reviews.</p>
+        </div>
       </div>
     </section>
 
@@ -493,61 +328,27 @@
     <section class="section">
       <h2 class="section-title">Technology Stack</h2>
       <p class="section-sub">
-        Built fully on open-source tools and deployed with browser-based runtimes so that anyone
-        with a modern browser can run or inspect the project.
+        Fully built on open-source tools and cloud-based runtimes allowing instant execution on any device.
       </p>
 
       <div class="grid">
-        <article class="card">
-          <div class="card-inner">
-            <h3>Python &amp; Jupyter Notebook</h3>
-            <p>
-              The core environment for modeling, experimentation and interactive explanation of
-              the energy optimizer.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-inner">
-            <h3>NumPy · Pandas · Plotly</h3>
-            <p>
-              Data handling, numerical computation and interactive visualizations for system
-              performance and energy trends.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-inner">
-            <h3>ipywidgets · pyttsx3</h3>
-            <p>
-              Creates interactive controls and offline voice guidance inside the notebook to
-              support live demos.
-            </p>
-          </div>
-        </article>
-
-        <article class="card">
-          <div class="card-inner">
-            <h3>Binder · nbviewer</h3>
-            <p>
-              Enables one-click cloud execution and static viewing so mentors and judges can
-              access the notebook from any device.
-            </p>
-          </div>
-        </article>
+        <div class="card"><h3>Python & Jupyter Notebook</h3><p>Environment for modeling, experiments and documentation.</p></div>
+        <div class="card"><h3>NumPy · Pandas · Plotly</h3><p>Data processing, simulation and visualization.</p></div>
+        <div class="card"><h3>ipywidgets · pyttsx3</h3><p>Interactive control & voice-based guidance.</p></div>
+        <div class="card"><h3>Binder · nbviewer</h3><p>Cloud execution and static viewing.</p></div>
       </div>
     </section>
+
   </main>
 
+  <!-- FOOTER -->
   <footer>
-    <span>© 2025 Dayananda Sagar University · Department of Computer Science and Engineering (AIML)</span>
-    <span class="team-line">Developed by NexGen Team — DSU CSE(AIML), 2nd Year</span>
+    © 2025 Dayananda Sagar University — CSE (AIML)<br>
+    Developed by NexGen Team — 2nd Year
   </footer>
 
+  <!-- NEURAL BACKGROUND SCRIPT -->
   <script>
-    // ===== 3D Neural Network / Energy Web Background =====
     const canvas = document.getElementById("bg-network");
     const ctx = canvas.getContext("2d");
     let nodes = [];
@@ -566,8 +367,8 @@
         nodes.push({
           x: Math.random() * width,
           y: Math.random() * height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: (Math.random() - 0.5) * 0.3,
           r: Math.random() * 2 + 0.7
         });
       }
@@ -578,7 +379,6 @@
 
       for (let i = 0; i < nodes.length; i++) {
         const n1 = nodes[i];
-
         n1.x += n1.vx;
         n1.y += n1.vy;
 
@@ -595,8 +395,7 @@
 
           if (dist < 140) {
             const alpha = 1 - dist / 140;
-            ctx.strokeStyle = "rgba(56,189,248," + (0.12 * alpha) + ")";
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = "rgba(56,189,248," + (0.10 * alpha) + ")";
             ctx.beginPath();
             ctx.moveTo(n1.x, n1.y);
             ctx.lineTo(n2.x, n2.y);
@@ -617,5 +416,6 @@
     resizeCanvas();
     drawNetwork();
   </script>
+
 </body>
 </html>
