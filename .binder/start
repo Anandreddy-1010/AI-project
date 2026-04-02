@@ -1,2 +1,2 @@
 #!/bin/bash
-voila MODEL.ipynb --port=$PORT --no-browser --VoilaConfiguration.enable_nbextensions=True
+voila MODEL.ipynb --port=$PORT --no-browser --strip_sources=True
