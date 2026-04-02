@@ -4,6 +4,4 @@ requests
 ipywidgets
 IPython
 pytz
-voila
-pandas
-scikit-learn
+pyttsx3
