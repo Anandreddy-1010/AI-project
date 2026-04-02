@@ -1,2 +1,0 @@
-#!/bin/bash
-voila MODEL.ipynb --port=$PORT --no-browser --strip_sources=True
