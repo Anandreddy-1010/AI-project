@@ -6,5 +6,4 @@ IPython
 pytz
 voila
 pandas
-tensorflow
 scikit-learn
