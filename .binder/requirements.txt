@@ -4,7 +4,6 @@ requests
 ipywidgets
 IPython
 pytz
-pyttsx3
 voila
 pandas
 tensorflow
