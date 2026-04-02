@@ -4,4 +4,3 @@ requests
 ipywidgets
 IPython
 pytz
-pyttsx3
