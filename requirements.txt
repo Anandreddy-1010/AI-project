@@ -5,3 +5,7 @@ ipywidgets
 IPython
 pytz
 pyttsx3
+voila
+pandas
+tensorflow
+scikit-learn
