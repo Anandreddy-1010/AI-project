@@ -4,3 +4,4 @@ requests
 ipywidgets
 IPython
 pytz
+streamlit
