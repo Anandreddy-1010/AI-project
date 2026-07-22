@@ -225,7 +225,7 @@ AIRES addresses all of these by combining forecasting, optimization, explainabil
 
 ---
 
-## 🖼️ Screenshots
+## 📸 Screenshots
 
 **Dashboard Controls & Navigation**
 ![Dashboard Controls](assests/01_dashboard_controls.png)
