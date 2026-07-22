@@ -227,23 +227,35 @@ AIRES addresses all of these by combining forecasting, optimization, explainabil
 
 ## 🖼️ Screenshots
 
-> Add exported PNGs of your dashboard to an `assets/` or `screenshots/` folder and reference them here, e.g.:
+**Dashboard Controls & Navigation**
+![Dashboard Controls](assests/01_dashboard_controls.png)
 
-```markdown
-![Overview Dashboard](assets/overview.png)
-![3D Sun Path](assets/sun-path-3d.png)
-![Optimization Chart](assets/optimization.png)
-![Explainable AI Snapshot](assets/explainable-ai.png)
-```
+**Overview — Live & 7-Day Forecast**
+![Overview Forecast](assests/02_overview_forecast.png)
 
-Recommended shots to include:
-1. Landing/title panel with Core Capabilities
-2. Overview tab — live & 7-day forecast chart
-3. Solar tab — 3D Sun Path + Earth/Sun view
-4. Wind tab — 3D Wind Vector + particle flow chart
-5. Optimization tab — Solar vs Wind vs Grid chart
-6. Explainable AI + Billing snapshot panel
-7. AI Assistant tab
+**Explainable AI & Billing Snapshot**
+![Explainable AI and Billing](assests/03_explainable_ai_billing.png)
+
+**Solar — History & Forecast**
+![Solar Forecast](assests/05_solar_forecast.png)
+
+**3D Sun Path — Live Position**
+![3D Sun Path](assests/06_3d_sun_path.png)
+
+**Earth + Sun View**
+![Earth and Sun View](assests/07_earth_sun_view.png)
+
+**Wind — History & Forecast**
+![Wind Forecast](assests/08_wind_forecast.png)
+
+**3D Wind Vector — Live & Forecast**
+![3D Wind Vector](assests/09_3d_wind_vector.png)
+
+**Wind Flow — Particle Style**
+![Wind Flow Particle Style](assests/04_wind_flow_particle.png)
+
+**Optimization — Solar vs Wind vs Shortage vs Grid**
+![Optimization Chart](assests/10_optimization_chart.png)
 
 ---
 
